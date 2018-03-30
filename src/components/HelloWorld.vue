@@ -1,12 +1,19 @@
 <template>
   <div class="hello">
     <h1>{{msg}}</h1>
-    <div v-for='(i,index) in arr' class="wrap">
+    <div v-for='i in arr' class="wrap">
       <div>
         TIT：<h3>{{i.tit}}</h3>
         CON：<p>{{i.con}}</p>
-        <button @click="del(index)">del</button>
+        <button @click="del(i)">del</button>
       </div>
+    </div>
+    
+    <button @click="abc">+</button>
+    <div v-show="lanf">
+      <input type="text" v-model="lan.tit">
+      <input type="text" v-model="lan.con">
+      <button @click="submit">添加</button>
     </div>
   </div>
 </template>
@@ -22,15 +29,28 @@ export default {
   },
   data(){
     return {
-      arr:[]
+      lan:{},
+      arr:[],
+      lanf:false
     }
   },
   methods:{
     del(e){
-      alert(1)
-      this.$http.post('http://localhost:3000/del',{id:e},{emulateJSON:true})
+      this.$http.post('http://localhost:3000/del',{id:e.id},{emulateJSON:true}).then(function(){
+        var _index = this.arr.indexOf(e)
+        this.arr.splice(_index,1)
+      })
+    },
+    submit(e){
+      this.$http.post('http://localhost:3000/add',this.lan,{emulateJSON:true}).then(function(){
+        this.arr.push(this.lan)
+      })
+    },
+    abc(){
+      this.lanf=!this.lanf
     }
   }
+  
 }
 </script>
 
