@@ -8,3 +8,4 @@ Vue.use(vuer)
 new Vue({
   render: h => h(App)
 }).$mount('#app')
+
